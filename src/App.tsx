@@ -1,6 +1,6 @@
 import { KeyPresser } from "./KeyPresser";
 import { Atom } from "./shapes/Atom";
-import { Circle } from "./shapes/Circle";
+import { Circle, ConfettiCircle } from "./shapes/Circle";
 
 
 const App = () => {
@@ -9,6 +9,7 @@ const App = () => {
       mappings={[
         { key: "a", component: Atom },
         { key: "b", component: Circle },
+        { key: "c", component: ConfettiCircle },
       ]}
     />
   );

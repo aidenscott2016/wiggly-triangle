@@ -10,3 +10,5 @@ export const randomPos = () => (
   }
 )
 
+
+export const isUpperCase = (s: String) => s === s.toUpperCase()

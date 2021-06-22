@@ -1,26 +1,35 @@
 import React from "react";
+import Draggable from "react-draggable";
+import { isUpperCase } from "./util";
 
-type Mapping = { key: string; component: () => JSX.Element };
+
+export type IsVisible = {visible?: boolean}
+type Mapping = { key: string; component: (props: IsVisible) => JSX.Element };
 type Props = {
   mappings: Mapping[];
 };
 export const KeyPresser = ({ mappings }: Props) => {
-  const [keys, updateKeys] = React.useState({});
+  const [pressedKeys, updatePressedKeys] = React.useState({});
 
   const handleKeyDown: React.KeyboardEventHandler = (e) => {
-    updateKeys({ ...keys, [e.key]: true });
+    updatePressedKeys({ ...pressedKeys, [e.key.toLowerCase()]: true });
   };
   const handleKeyUp: React.KeyboardEventHandler = (e) => {
-    updateKeys({ ...keys, [e.key]: false });
+    if (!isUpperCase(e.key)) {
+      updatePressedKeys({ ...pressedKeys, [e.key]: false });
+    }
   };
   return (
     <div tabIndex={1} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-      {JSON.stringify(keys)}
+      {JSON.stringify(pressedKeys)}
       {mappings.map((m, i) => {
-        const style = keys[m.key] ? {} : { display: "none" } 
+        const visible = pressedKeys[m.key]
+        const style = visible ? {} : { display: "none" };
         return (
           <div key={i} style={style}>
-            {m.component()}
+            <Draggable>
+            {m.component({visible})}
+            </Draggable>
           </div>
         );
       })}
