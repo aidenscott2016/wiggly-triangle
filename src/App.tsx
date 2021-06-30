@@ -1,18 +1,20 @@
-import { KeyPresser } from "./KeyPresser";
-import { Atom } from "./shapes/Atom";
-import { Circle, ConfettiCircle } from "./shapes/Circle";
+import { Atom, WrappedAtom } from "./shapes/Atom";
+import { Wiggler } from "./shapes/Wiggler";
+import Wiv from 'react-wiv'
+import { Circle } from "./shapes/Circle";
+import { KeyPresser } from "./utils/KeyPresser";
+import './style.css'
 
-
-const App = () => {
-  return (
+const App = () => (
+  <>
     <KeyPresser
       mappings={[
-        { key: "a", component: Atom },
+        { key: "a", component: WrappedAtom },
         { key: "b", component: Circle },
-        { key: "c", component: ConfettiCircle },
-      ]}
-    />
-  );
-};
+        { key: "w", component: Wiggler },
+        // { key: "c", component:s ConfettiCircle },
+      ]} />
+  </>
+);
 
 export default App;

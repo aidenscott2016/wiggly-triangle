@@ -1,5 +1,6 @@
 {
   "name": "wiggly-triggly",
+  "homepage": "holophonor",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -15,7 +16,9 @@
     "react-dom": "^17.0.2",
     "react-dom-confetti": "^0.2.0",
     "react-draggable": "^4.4.3",
-    "react-scripts": "4.0.3",
+    "react-scripts": "4.0build.3",
+    "react-sizeme": "^3.0.1",
+    "react-wiv": "^0.0.4",
     "typescript": "^4.3.4",
     "web-vitals": "^1.1.2"
   },

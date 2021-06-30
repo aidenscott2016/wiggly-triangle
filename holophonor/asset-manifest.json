@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.js": "/holophonor/static/js/main.40e4c2cd.chunk.js",
+    "main.js.map": "/holophonor/static/js/main.40e4c2cd.chunk.js.map",
+    "runtime-main.js": "/holophonor/static/js/runtime-main.a2f0e439.js",
+    "runtime-main.js.map": "/holophonor/static/js/runtime-main.a2f0e439.js.map",
+    "static/js/2.f1ec7229.chunk.js": "/holophonor/static/js/2.f1ec7229.chunk.js",
+    "static/js/2.f1ec7229.chunk.js.map": "/holophonor/static/js/2.f1ec7229.chunk.js.map",
+    "index.html": "/holophonor/index.html",
+    "static/js/2.f1ec7229.chunk.js.LICENSE.txt": "/holophonor/static/js/2.f1ec7229.chunk.js.LICENSE.txt",
+    "static/media/logo.6ce24c58.svg": "/holophonor/static/media/logo.6ce24c58.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a2f0e439.js",
+    "static/js/2.f1ec7229.chunk.js",
+    "static/js/main.40e4c2cd.chunk.js"
+  ]
+}
