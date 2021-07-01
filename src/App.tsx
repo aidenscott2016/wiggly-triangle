@@ -6,6 +6,7 @@ import { KeyPresser } from "./utils/KeyPresser";
 
 const App = () => (
   <>
+    <p>test</p>
     <KeyPresser
       mappings={[
         { key: "a", component: WrappedAtom },
