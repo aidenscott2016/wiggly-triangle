@@ -30,8 +30,8 @@ jobs:
       # download yarn, install project
       - uses: actions/setup-node@v2
       - run: | 
-          npm install
-          npm run build
+          yarn install
+          yarn run build
           mv build docs
           git add -A
           git commit -mbuild
