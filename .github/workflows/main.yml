@@ -28,8 +28,8 @@ jobs:
       # download yarn, install project
       - uses: actions/setup-node@v2
       - run: | 
-          npm install  --cwd project
-          npm run build  --cwd project
+          npm install
+          npm run build
           mv build docs
           git add -A
           git commit -mbuild
