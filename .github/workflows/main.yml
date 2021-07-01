@@ -33,6 +33,8 @@ jobs:
           yarn install
           yarn run build
           mv build docs
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
           git add -A
           git commit -mbuild
           git push origin HEAD:docs -f
