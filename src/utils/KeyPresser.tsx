@@ -1,26 +1,52 @@
 import React from "react";
 import Draggable from "react-draggable";
+import { useGetTimeElapsed } from "../hooks/useGetTimeElapsed";
+import { useKeyboardInstrument } from "../hooks/useKeyboardInstrument";
+import { usePlayback } from "../hooks/usePlayback";
 import { isUpperCase } from "../util";
+import { Event } from "../types";
 
 export type IsVisible = { visible?: boolean };
 type Mapping = { key: string; component: (props: IsVisible) => JSX.Element };
 type Props = {
   mappings: Mapping[];
 };
+
 export const KeyPresser = ({ mappings }: Props) => {
-  const [pressedKeys, updatePressedKeys] = React.useState({});
+  const { addKeyDown, addKeyUp, pressedKeys } = useKeyboardInstrument();
+  const { addToTimeline, clearTimeline, play, toggleRecording, isRecording , isPlaying} =
+    usePlayback({
+      handleKeyDown: addKeyDown,
+      handleKeyUp: addKeyUp,
+    });
+
   React.useEffect(() => {
-    document.title = JSON.stringify(pressedKeys);
+    console.log(pressedKeys);
   }, [pressedKeys]);
 
-  const handleKeyDown: React.KeyboardEventHandler = (e) => {
-    updatePressedKeys({ ...pressedKeys, [e.key.toLowerCase()]: true });
+  const handleKeyDown: React.KeyboardEventHandler = ({ key }) => {
+    addToTimeline(key, Event.KeyDown);
+    addKeyDown(key);
   };
-  const handleKeyUp: React.KeyboardEventHandler = (e) => {
-    if (!isUpperCase(e.key)) {
-      updatePressedKeys({ ...pressedKeys, [e.key]: false });
+  const handleKeyUp: React.KeyboardEventHandler = ({ key }) => {
+    addToTimeline(key, Event.KeyUp);
+    if (!isUpperCase(key)) {
+      addKeyUp(key);
     }
   };
+
+  const RecordButton = () => (
+    <button onClick={toggleRecording}>
+      {isRecording ? "stop recording" : "record"}
+    </button>
+  );
+
+  const PlayButton = () => (
+    <button onClick={play}>
+      {isPlaying ? 'playing' : 'play'}
+    </button>
+  );
+
   return (
     <div
       className="full-height"
@@ -28,6 +54,8 @@ export const KeyPresser = ({ mappings }: Props) => {
       onKeyDown={handleKeyDown}
       onKeyUp={handleKeyUp}
     >
+      <RecordButton/>
+      <PlayButton/>
       {mappings.map((m, i) => {
         const visible = pressedKeys[m.key];
         const style = visible ? {} : { display: "none" };
