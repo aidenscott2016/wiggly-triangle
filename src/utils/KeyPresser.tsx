@@ -1,5 +1,7 @@
 import React from "react";
 import Draggable from "react-draggable";
+import { useGetTimeElapsed } from "../hooks/useGetTimeElapsed";
+import { usePlayback } from "../hooks/usePlayback";
 import { isUpperCase } from "../util";
 
 export type IsVisible = { visible?: boolean };
@@ -18,22 +20,11 @@ enum Event {
 }
 
 export const KeyPresser = ({ mappings }: Props) => {
-  const useTimeElapsed = () => {
-    const [startTime, setStartTime] = React.useState(0);
-    React.useEffect(() => {
-      setStartTime(performance.now());
-    }, []);
-    return () => performance.now() - startTime;
-  };
+  const {timeline, addToTimeline, clearTimeline} = usePlayback()
+
 
   const [pressedKeys, updatePressedKeys] = React.useState({});
-  const [timeline, updateTimeline] = React.useState<Timeline>([]);
-  const timeElapsed = useTimeElapsed();
 
-  const addToTimeline = (k: Key, e: Event) =>
-    updateTimeline([...timeline, [timeElapsed(), k, e]]);
-
-  const clearTimeline = () => updateTimeline([]);
   const addKeyDown = (k: Key) =>
     updatePressedKeys({ ...pressedKeys, [k.toLowerCase()]: true });
   const addKeyUp = (k: Key) =>
