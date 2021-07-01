@@ -1,8 +1,10 @@
 import React from "react";
 import Draggable from "react-draggable";
 import { useGetTimeElapsed } from "../hooks/useGetTimeElapsed";
+import { useKeyboardInstrument } from "../hooks/useKeyboardInstrument";
 import { usePlayback } from "../hooks/usePlayback";
 import { isUpperCase } from "../util";
+import { Event } from "../types";
 
 export type IsVisible = { visible?: boolean };
 type Mapping = { key: string; component: (props: IsVisible) => JSX.Element };
@@ -10,42 +12,17 @@ type Props = {
   mappings: Mapping[];
 };
 
-type Seconds = number;
-type Key = string;
-type Note = [Seconds, Key, Event];
-type Timeline = Note[];
-enum Event {
-  KeyUp,
-  KeyDown,
-}
-
 export const KeyPresser = ({ mappings }: Props) => {
-  const {timeline, addToTimeline, clearTimeline} = usePlayback()
-
-
-  const [pressedKeys, updatePressedKeys] = React.useState({});
-
-  const addKeyDown = (k: Key) =>
-    updatePressedKeys({ ...pressedKeys, [k.toLowerCase()]: true });
-  const addKeyUp = (k: Key) =>
-    updatePressedKeys({ ...pressedKeys, [k.toLowerCase()]: false });
+  const { addKeyDown, addKeyUp, pressedKeys } = useKeyboardInstrument();
+  const { addToTimeline, clearTimeline, play, toggleRecording, isRecording , isPlaying} =
+    usePlayback({
+      handleKeyDown: addKeyDown,
+      handleKeyUp: addKeyUp,
+    });
 
   React.useEffect(() => {
-      console.log(pressedKeys)
+    console.log(pressedKeys);
   }, [pressedKeys]);
-
-  const play = () =>
-    timeline.forEach(([t, k, e]) => {
-      setTimeout(() => {
-        switch (e) {
-          case Event.KeyDown:
-            addKeyDown(k);
-            break;
-          case Event.KeyUp:
-            addKeyUp(k);
-        }
-      }, t);
-    });
 
   const handleKeyDown: React.KeyboardEventHandler = ({ key }) => {
     addToTimeline(key, Event.KeyDown);
@@ -58,6 +35,18 @@ export const KeyPresser = ({ mappings }: Props) => {
     }
   };
 
+  const RecordButton = () => (
+    <button onClick={toggleRecording}>
+      {isRecording ? "stop recording" : "record"}
+    </button>
+  );
+
+  const PlayButton = () => (
+    <button onClick={play}>
+      {isPlaying ? 'playing' : 'play'}
+    </button>
+  );
+
   return (
     <div
       className="full-height"
@@ -65,10 +54,8 @@ export const KeyPresser = ({ mappings }: Props) => {
       onKeyDown={handleKeyDown}
       onKeyUp={handleKeyUp}
     >
-      {/* <button onClick={}>record</button> */}
-      {/* <button>stop recording</button> */}
-      <button onClick={play}>play</button> 
-      <button onClick={play}>loop</button> 
+      <RecordButton/>
+      <PlayButton/>
       {mappings.map((m, i) => {
         const visible = pressedKeys[m.key];
         const style = visible ? {} : { display: "none" };
