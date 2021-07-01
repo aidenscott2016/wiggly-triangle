@@ -1,9 +1,8 @@
-import { Atom, WrappedAtom } from "./shapes/Atom";
-import { Wiggler } from "./shapes/Wiggler";
-import Wiv from 'react-wiv'
+import { WrappedAtom } from "./shapes/Atom";
 import { Circle } from "./shapes/Circle";
+import { Wiggler } from "./shapes/Wiggler";
+import './style.css';
 import { KeyPresser } from "./utils/KeyPresser";
-import './style.css'
 
 const App = () => (
   <>
