@@ -1,10 +1,9 @@
 import React from "react";
 import Draggable from "react-draggable";
-import { useGetTimeElapsed } from "../hooks/useGetTimeElapsed";
 import { useKeyboardInstrument } from "../hooks/useKeyboardInstrument";
 import { usePlayback } from "../hooks/usePlayback";
-import { isUpperCase } from "../util";
 import { Event } from "../types";
+import { isUpperCase } from "../util";
 
 export type IsVisible = { visible?: boolean };
 type Mapping = { key: string; component: (props: IsVisible) => JSX.Element };
@@ -14,7 +13,7 @@ type Props = {
 
 export const KeyPresser = ({ mappings }: Props) => {
   const { addKeyDown, addKeyUp, pressedKeys } = useKeyboardInstrument();
-  const { addToTimeline, clearTimeline, play, toggleRecording, isRecording , isPlaying} =
+  const { addToTimeline, play, toggleRecording, isRecording , isPlaying} =
     usePlayback({
       handleKeyDown: addKeyDown,
       handleKeyUp: addKeyUp,

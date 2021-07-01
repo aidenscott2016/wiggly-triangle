@@ -1,4 +1,3 @@
-import { time } from "console";
 import React from "react";
 import { Event, Key, Timeline } from "../types";
 import { useGetTimeElapsed } from "./useGetTimeElapsed";
