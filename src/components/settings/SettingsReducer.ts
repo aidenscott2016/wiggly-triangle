@@ -6,7 +6,7 @@ import { ComponentNames, COMPONENT_ATOM, COMPONENT_CIRCLE, Key, KEY_A, KEY_B, KE
 
 const ADD_MAPPING = 'add_mapping'
 
-const addKeyMapping = (key: Key, component: ComponentNames): Action => ({ type: ADD_MAPPING, payload: { key, component } })
+export const addKeyMapping = (key: Key, component: ComponentNames): Action => ({ type: ADD_MAPPING, payload: { key, component } })
 
 type ActionType = typeof ADD_MAPPING
 type Action = { type: ActionType, payload: any }
