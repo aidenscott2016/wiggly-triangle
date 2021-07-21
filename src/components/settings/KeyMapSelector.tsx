@@ -1,4 +1,3 @@
-import { Field, Form, Formik } from "formik";
 import { Mapping } from "../../utils/KeyPresser";
 import { addKeyMapping, useSettings } from "./SettingsReducer";
 
@@ -9,7 +8,6 @@ type State = {
 export const SettingsPane = () => (
   <div>
     <KeyBinds />
-    <KeyBinder />
   </div>
 );
 
@@ -38,24 +36,24 @@ export const KeyBinds = () => {
   );
 };
 
-export const KeyBinder = () => {
-  const [{ componentsAvailable }, dispatch] = useSettings();
+// export const KeyBinder = () => {
+//   const [{ componentsAvailable }, dispatch] = useSettings();
 
-  return (
-      <Formik
-        initialValues={componentsAvailable}
-        onSubmit={(values, ) => {
-          console.log(values)
-        }}
-      >
-        <Form>
-          <label htmlFor="key">key</label>
-          <Field name="key" id="key" placeholder="key" />
-          <button type="submit">add</button>
-        </Form>
-      </Formik>
-  );
-};
+//   return (
+//       <Formik
+//         initialValues={componentsAvailable}
+//         onSubmit={(values, ) => {
+//           console.log(values)
+//         }}
+//       >
+//         <Form>
+//           <label htmlFor="key">key</label>
+//           <Field name="key" id="key" placeholder="key" />
+//           <button type="submit">add</button>
+//         </Form>
+//       </Formik>
+//   );
+// };
 
 // <Field>
 //   {Object.entries(componentsAvailable).map((k, v) => (
