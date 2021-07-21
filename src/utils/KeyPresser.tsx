@@ -6,7 +6,7 @@ import { Event } from "../types";
 import { isUpperCase } from "../util";
 
 export type IsVisible = { visible?: boolean };
-type Mapping = { key: string; component: (props: IsVisible) => JSX.Element };
+export type Mapping = { key: string; component: (props: IsVisible) => JSX.Element };
 type Props = {
   mappings: Mapping[];
 };

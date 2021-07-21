@@ -1,0 +1,16 @@
+import one245 from "../images/125.gif";
+import circl from '../images/circl.gif';
+import coffee from '../images/coffee.gif';
+import firex from '../images/firex.gif';
+import henry from "../images/henry.gif";
+import orbital from '../images/orbital.gif';
+import squa from '../images/squa.gif';
+import trigant from '../images/Triang.gif';
+export const Henry = () => <img alt="" src={henry} />;
+export const One245  = () => <img alt="" src={one245} />;
+export const Circl  = () => <img alt="" src={circl} />;
+export const Coffee  = () => <img alt="" src={coffee} />;
+export const Firex  = () => <img alt="" src={firex} />;
+export const Trigany = () => <img alt="" src={trigant} />;
+export const Squa = () => <img alt="" src={squa} />;
+export const Orbital = () => <img alt="" src={orbital} />;
