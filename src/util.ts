@@ -1,3 +1,4 @@
+/* eslint-disable use-isnan */
 import { random } from 'lodash'
 
 const height = document.documentElement.clientHeight
@@ -12,4 +13,7 @@ export const randomPos = (elWidth, elHeight) => (
 )
 
 
-export const isUpperCase = (s: String) => s === s.toUpperCase()
+export const isUpperCase = (s: string) => {
+
+  return Number.parseInt(s) === NaN &&  s === s.toUpperCase()
+}
