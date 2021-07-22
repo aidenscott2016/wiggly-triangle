@@ -31,7 +31,7 @@ jobs:
       - uses: actions/setup-node@v2
       - run: | 
           yarn install
-          yarn run build
+          CI=false yarn run build
           mv build docs
           git config --global user.email "you@example.com"
           git config --global user.name "Your Name"
