@@ -18,6 +18,7 @@ import { Wiggler } from "./shapes/Wiggler";
 import "./style.css";
 import { KeyPresser } from "./utils/KeyPresser";
 import { cycleLocationBack, cycleLocationFore } from "./hooks/useKeyboardInstrument";
+import { clearTimeLine, togglePlaying, toggleRec } from "./hooks/usePlayback";
 
 export const settings = {
   shapes: [
@@ -34,7 +35,12 @@ export const settings = {
   ],
   actions: {
     '[': cycleLocationBack,
-    ']': cycleLocationFore
+    ']': cycleLocationFore,
+    'Tab': toggleRec,
+    'Enter': togglePlaying,
+    'Escape': clearTimeLine
+
+
   }
 };
 const App = () => (
