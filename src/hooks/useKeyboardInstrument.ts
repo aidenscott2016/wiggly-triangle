@@ -34,16 +34,13 @@ type State = {
   shapes: Record<Key, ShapeMeta>
 }
 
-
-// const topleft
-// const zones = 
-const INITIAL_STATE: State = { activeKeys: { '1': true }, shapes: {}, currentKey: '1' }
+const INITIAL_STATE: State = { activeKeys: {}, shapes: {}, currentKey: '' }
 
 const setKeyStatus = (s: State, key: Key, pressed: boolean) => ({ ...s, activeKeys: { ...s.activeKeys, [key.toLowerCase()]: pressed } })
 const decrementKeyIndex = (i: number) => ((i - 1) + zones.length) % zones.length
 const incrementKeyIndex = (i: number) => (i + 1) % zones.length
 const setNewPos = (s: State, fn: (i: number) => number): State => {
-  console.log('in rediucer')
+  console.log(s.currentKey)
   const currentShape: ShapeMeta = s.shapes[s.currentKey] ? s.shapes[s.currentKey] : { zoneIndex: 10, coords: {} }
   const zoneIndex = fn(currentShape.zoneIndex)
   const newShape: ShapeMeta = { ...currentShape, zoneIndex, coords: zones[zoneIndex] }

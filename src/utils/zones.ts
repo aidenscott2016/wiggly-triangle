@@ -1,7 +1,6 @@
 const TOP_LEFT = {
   top: '0px',
   left:'0px',
-
   right: undefined,
   bottom: undefined,
 }
@@ -26,7 +25,6 @@ const TOP_RIGHT = {
   right:'0px',
   bottom: undefined,
   left: undefined
-
 }
 
 export const zones = [TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM_LEFT]
