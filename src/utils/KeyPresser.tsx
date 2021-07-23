@@ -25,30 +25,43 @@ type Settings = {
 type Props = Settings;
 
 export const KeyPresser = ({ shapes, actions }: Props) => {
-  const { dispatch, addKeyDown, addKeyUp, pressedKeys, state } =
-    useKeyboardInstrument();
-  const { addToTimeline, play, toggleRecording, isRecording, isPlaying } =
-    usePlayback({
-      handleKeyDown: addKeyDown,
-      handleKeyUp: addKeyUp,
-    });
-
-  React.useEffect(() => {}, [pressedKeys]);
-
-  const handleKeyDown: React.KeyboardEventHandler = ({ key }) => {
-    addToTimeline(key, Event.KeyDown);
+  const masterKeyDown = (key: Key) => {
     addKeyDown(key);
-
     if (actions[key]) {
       console.log("sdpecial key");
       dispatch(actions[key](key));
     }
   };
-  const handleKeyUp: React.KeyboardEventHandler = ({ key }) => {
-    addToTimeline(key, Event.KeyUp);
+
+  const masterKeyUp = (key: Key) => {
     if (!isUpperCase(key)) {
       addKeyUp(key);
     }
+  };
+  const { dispatch, addKeyDown, addKeyUp, pressedKeys, state } =
+    useKeyboardInstrument();
+  const {
+    addToTimeline,
+    play,
+    toggleRecording,
+    isRecording,
+    isPlaying,
+    timeline,
+  } = usePlayback({
+    handleKeyDown: masterKeyDown,
+    handleKeyUp: masterKeyUp,
+  });
+
+  React.useEffect(() => {}, [pressedKeys]);
+
+  const handleKeyDown: React.KeyboardEventHandler = ({ key }) => {
+    addToTimeline(key, Event.KeyDown);
+    return masterKeyDown(key);
+  };
+
+  const handleKeyUp: React.KeyboardEventHandler = ({ key }) => {
+    addToTimeline(key, Event.KeyUp);
+    return masterKeyUp(key);
   };
 
   const RecordButton = () => (
@@ -67,6 +80,7 @@ export const KeyPresser = ({ shapes, actions }: Props) => {
       onKeyDown={handleKeyDown}
       onKeyUp={handleKeyUp}
     >
+      {JSON.stringify(timeline)}
       <RecordButton />
       <PlayButton />
       {shapes.map((m, i) => {
@@ -78,7 +92,7 @@ export const KeyPresser = ({ shapes, actions }: Props) => {
             : {};
         }
         const style: React.CSSProperties = visible
-          ? { position: "absolute", ...coords }
+          ? { position: "absolute", ...coords, mixBlendMode: "hard-light" }
           : { display: "none" };
         return (
           <div key={i} style={style}>

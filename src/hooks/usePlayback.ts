@@ -24,16 +24,17 @@ export const usePlayback = ({ handleKeyDown, handleKeyUp }: UsePlaybackParams) =
 
   const [isPlaying, setIsPlaying] = React.useState(false)
   const play = () => {
-    // debugger
     if (!isPlaying && timeline.length) {
       setIsPlaying(true)
       timeline.forEach(([t, k, e], i) => {
         setTimeout(() => {
           switch (e) {
             case Event.KeyDown:
+              console.log('pressing ', k)
               handleKeyDown(k);
               break;
             case Event.KeyUp:
+              console.log('releaseing ', k)
               handleKeyUp(k);
           }
         }, t);
