@@ -1,19 +1,33 @@
-import React from "react";
+import React, { StyleHTMLAttributes } from "react";
 import Draggable from "react-draggable";
 import { useKeyboardInstrument } from "../hooks/useKeyboardInstrument";
 import { usePlayback } from "../hooks/usePlayback";
-import { Event } from "../types";
+import { Event, Key } from "../types";
 import { isUpperCase } from "../util";
 
 export type IsVisible = { visible?: boolean };
-export type Mapping = { key: string; component: (props: IsVisible) => JSX.Element };
-type Props = {
-  mappings: Mapping[];
+
+export type KeyMapping = {
+  key: string;
+}
+
+export type ShapeMapping =  KeyMapping & {
+  component: (props: IsVisible) => JSX.Element;
 };
 
-export const KeyPresser = ({ mappings }: Props) => {
-  const { addKeyDown, addKeyUp, pressedKeys } = useKeyboardInstrument();
-  const { addToTimeline, play, toggleRecording, isRecording , isPlaying} =
+export type ActionMappings = Record<Key, Function>
+
+
+type Settings = {
+  shapes: ShapeMapping[],
+  actions:  ActionMappings
+}
+
+type Props = Settings
+
+export const KeyPresser = ({ shapes, actions}: Props) => {
+  const { dispatch, addKeyDown, addKeyUp, pressedKeys, state} = useKeyboardInstrument();
+  const { addToTimeline, play, toggleRecording, isRecording, isPlaying } =
     usePlayback({
       handleKeyDown: addKeyDown,
       handleKeyUp: addKeyUp,
@@ -26,6 +40,11 @@ export const KeyPresser = ({ mappings }: Props) => {
   const handleKeyDown: React.KeyboardEventHandler = ({ key }) => {
     addToTimeline(key, Event.KeyDown);
     addKeyDown(key);
+  
+    if (actions[key]) {
+      console.log('found key')
+      dispatch(actions[key](key))
+    }
   };
   const handleKeyUp: React.KeyboardEventHandler = ({ key }) => {
     addToTimeline(key, Event.KeyUp);
@@ -41,11 +60,8 @@ export const KeyPresser = ({ mappings }: Props) => {
   );
 
   const PlayButton = () => (
-    <button onClick={play}>
-      {isPlaying ? 'playing' : 'play'}
-    </button>
+    <button onClick={play}>{isPlaying ? "playing" : "play"}</button>
   );
-
   return (
     <div
       className="full-height"
@@ -53,14 +69,16 @@ export const KeyPresser = ({ mappings }: Props) => {
       onKeyDown={handleKeyDown}
       onKeyUp={handleKeyUp}
     >
-      <RecordButton/>
-      <PlayButton/>
-      {mappings.map((m, i) => {
+      <RecordButton />
+      <PlayButton />
+      {shapes.map((m, i) => {
         const visible = pressedKeys[m.key];
-        const style = visible ? {} : { display: "none" };
+        const top = state.shapes[m.key] ? state.shapes[m.key].coords.top : '0px'
+        console.log(`current key: ${state.currentKey} coords to ${top}`)
+        const style: React.CSSProperties = visible ? {position: 'absolute', top} : { display: "none"};
         return (
           <div key={i} style={style}>
-            <Draggable>{m.component({ visible })}</Draggable>
+            {m.component({ visible })}
           </div>
         );
       })}

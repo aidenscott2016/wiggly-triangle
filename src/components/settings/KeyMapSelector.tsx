@@ -1,8 +1,8 @@
-import { Mapping } from "../../utils/KeyPresser";
+import { ShapeMapping } from "../../utils/KeyPresser";
 import { addKeyMapping, useSettings } from "./SettingsReducer";
 
 type State = {
-  map: Mapping[];
+  map: ShapeMapping[];
 };
 
 export const SettingsPane = () => (
