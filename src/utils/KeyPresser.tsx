@@ -62,10 +62,11 @@ export const KeyPresser = ({ shapes, actions }: Props) => {
 
   return (
     <>
-      {/* <p style={{ zIndex: 100, position: 'absolute', margin: 0}}>{keys}</p>
-      <p style={{ zIndex: 100, paddingTop: '4em'}}>{JSON.stringify(timline)}</p> */}
+      <p style={{ overflowWrap: 'anywhere', zIndex: 100, position: 'absolute', margin: 0, fontSize: '20pt', color: 'darkgray', fontFamily: 'Comic Sans MS, Comic Sans MS Regular'}}>{keys}</p>
+      {/* <p style={{ zIndex: 100, paddingTop: '4em'}}>{JSON.stringify(timline)}</p> */} 
       <div
         className="full-height"
+        style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
         tabIndex={1}
         onKeyDown={handleKeyDown}
         onKeyUp={handleKeyUp}
@@ -79,7 +80,7 @@ export const KeyPresser = ({ shapes, actions }: Props) => {
             : {};
         }
         const style: React.CSSProperties = visible
-          ? { position: "absolute", ...coords, mixBlendMode: "hard-light" }
+          ? {  ...coords,  mixBlendMode: "hard-light" }
           : { display: "none" };
         return (
           <div key={i} style={style}>

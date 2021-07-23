@@ -20,12 +20,8 @@ export const cycleLocationFore = actionCreator<Key>(CYCLE_LOC_FORE);
 
 type ShapeMeta = {
   zoneIndex: number
-  coords: {
-    top?: string,
-    left?: string
-    bottom?: string
-    right?: string
-  }
+  coords:  Partial<React.CSSProperties>
+    
 }
 
 type State = {
