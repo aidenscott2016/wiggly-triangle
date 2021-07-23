@@ -1,3 +1,4 @@
+import { delay } from 'lodash'
 import React from "react";
 import actionCreatorFactory from "typescript-fsa";
 import { reducerWithInitialState } from "typescript-fsa-reducers";
@@ -13,14 +14,18 @@ type State = {
   recording: boolean,
   startRecordTime: number
   playing: boolean,
-  timeline: Timeline
+  timeline: Timeline,
+  playRequested: boolean,
+  keys: string
 }
 
 const initialState: State = {
   recording: false,
   playing: false,
+  playRequested: false,
   timeline: [],
-  startRecordTime: 0
+  startRecordTime: 0,
+  keys: ''
 }
 
 const START_RECORDING = 'START_RECORDING'
@@ -57,15 +62,31 @@ const reducer = reducerWithInitialState(initialState)
   .case(startPlaying, s => ({ ...s, playing: true, recording: false }))
   .case(stopPlaying, s => ({ ...s, playing: false, recording: false }))
   .case(togglePlaying, s => {
-    return ({ ...s, recording: false, playing: !s.playing });
+    return ({ ...s, recording: false, playRequested: !s.playRequested});
   })
-  .case(addNote, (s, { key, e }) => (s.recording && key.length === 1 ? { ...s, playing: false, timeline: [...s.timeline, [performance.now() - s.startRecordTime, key, e]] } : s))
-  .case(clearTimeLine, (s) => ({...s, timeline: []}))
+  .case(addNote, (s, { key, e }) => {
+    if (key === 'Backspace') {
+      return { ...s, keys: s.keys.slice(0, -1) }
+    }
+    if (s.recording &&
+      key.length === 1) {
+      return {
+        ...s, keys: e === Event.KeyUp ? s.keys : s.keys + key,
+        playing: false, timeline: [...s.timeline,
+        [performance.now() - s.startRecordTime, key, e]]
+      }
+    }
+    if (key.length === 1 && e === Event.KeyDown) {
+      return { ...s, keys: s.keys + key };
+    }
+    return s
+  })
+  .case(clearTimeLine, (s) => ({ ...s, timeline: [] }))
 
 export const usePlayback = ({ handleKeyDown, handleKeyUp }: UsePlaybackParams) => {
   const [s, d] = React.useReducer(reducer, initialState)
 
-  if (s.playing && s.timeline.length) {
+  if (!s.playing && s.playRequested) {
     d(startPlaying)
     s.timeline.forEach(([t, k, e], i) => {
       setTimeout(() => {
@@ -78,14 +99,17 @@ export const usePlayback = ({ handleKeyDown, handleKeyUp }: UsePlaybackParams) =
             console.log('releaseing ', k)
             handleKeyUp(k);
         }
-      }, t);
-      d(stopPlaying)
-      // if (i === s.timeline.length - 1 && repeat) {
-      //   play()
-      // }
+        if (i === s.timeline.length - 1) {
+          setTimeout(() => d(stopPlaying), s.timeline[0][0])
+        }
+      }, t)
     })
   }
   return {
-    timline: s.timeline, dispatch: d
+    timline: s.timeline, dispatch: d, keys: s.keys
   }
+}
+
+function timeout(ms: number) {
+  return new Promise(res => setTimeout(res, ms));
 }

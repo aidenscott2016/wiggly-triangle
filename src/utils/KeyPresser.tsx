@@ -41,7 +41,7 @@ export const KeyPresser = ({ shapes, actions }: Props) => {
   };
   const { dispatch, addKeyDown, addKeyUp, pressedKeys, state } =
     useKeyboardInstrument();
-  const { dispatch: dispatchPlayback, timline} = usePlayback({
+  const { dispatch: dispatchPlayback, keys ,timline} = usePlayback({
     handleKeyDown: masterKeyDown,
     handleKeyUp: masterKeyUp,
   });
@@ -49,25 +49,27 @@ export const KeyPresser = ({ shapes, actions }: Props) => {
   React.useEffect(() => {}, [pressedKeys]);
 
   const handleKeyDown: React.KeyboardEventHandler = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     dispatchPlayback(addNote({ key: e.key, e: Event.KeyDown }));
     return masterKeyDown(e.key);
   };
 
   const handleKeyUp: React.KeyboardEventHandler = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     dispatchPlayback(addNote({ key: e.key, e: Event.KeyUp }));
     return masterKeyUp(e.key);
   };
 
   return (
-    <div
-      className="full-height"
-      tabIndex={1}
-      onKeyDown={handleKeyDown}
-      onKeyUp={handleKeyUp}
-    >
-      {JSON.stringify(timline)}
+    <>
+      {/* <p style={{ zIndex: 100, position: 'absolute', margin: 0}}>{keys}</p>
+      <p style={{ zIndex: 100, paddingTop: '4em'}}>{JSON.stringify(timline)}</p> */}
+      <div
+        className="full-height"
+        tabIndex={1}
+        onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyUp}
+      >
       {shapes.map((m, i) => {
         const visible = pressedKeys[m.key];
         let coords = {};
@@ -85,6 +87,7 @@ export const KeyPresser = ({ shapes, actions }: Props) => {
           </div>
         );
       })}
-    </div>
+      </div>
+    </>
   );
 };
