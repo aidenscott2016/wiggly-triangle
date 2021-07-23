@@ -17,7 +17,7 @@ import { Gnarly } from "./shapes/Gnarly";
 import { Wiggler } from "./shapes/Wiggler";
 import "./style.css";
 import { KeyPresser } from "./utils/KeyPresser";
-import { cycleLocationBack } from "./hooks/useKeyboardInstrument";
+import { cycleLocationBack, cycleLocationFore } from "./hooks/useKeyboardInstrument";
 
 export const settings = {
   shapes: [
@@ -33,7 +33,8 @@ export const settings = {
     { key: "0", component: Orbital },
   ],
   actions: {
-    '[': cycleLocationBack
+    '[': cycleLocationBack,
+    ']': cycleLocationFore
   }
 };
 const App = () => (

@@ -34,7 +34,6 @@ export const KeyPresser = ({ shapes, actions}: Props) => {
     });
 
   React.useEffect(() => {
-    console.log(pressedKeys);
   }, [pressedKeys]);
 
   const handleKeyDown: React.KeyboardEventHandler = ({ key }) => {
@@ -42,7 +41,7 @@ export const KeyPresser = ({ shapes, actions}: Props) => {
     addKeyDown(key);
   
     if (actions[key]) {
-      console.log('found key')
+       console.log('sdpecial key') 
       dispatch(actions[key](key))
     }
   };
@@ -73,9 +72,8 @@ export const KeyPresser = ({ shapes, actions}: Props) => {
       <PlayButton />
       {shapes.map((m, i) => {
         const visible = pressedKeys[m.key];
-        const top = state.shapes[m.key] ? state.shapes[m.key].coords.top : '0px'
-        console.log(`current key: ${state.currentKey} coords to ${top}`)
-        const style: React.CSSProperties = visible ? {position: 'absolute', top} : { display: "none"};
+        const coords = state.shapes[state.currentKey] ? state.shapes[state.currentKey].coords: {}
+        const style: React.CSSProperties = visible ? {position: 'absolute', ...coords} : { display: "none"};
         return (
           <div key={i} style={style}>
             {m.component({ visible })}
