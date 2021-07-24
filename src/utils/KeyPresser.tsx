@@ -53,15 +53,13 @@ export const KeyPresser = ({ shapes, actions }: Props) => {
     if (state.activeKeys[e.key]) {
       return
     }
-    const shapeMeta = state.shapes[e.key] 
-    dispatchPlayback(addNote({ key: e.key, e: Event.KeyDown, shapeMeta }));
+    dispatchPlayback(addNote({ key: e.key, e: Event.KeyDown}));
     return masterKeyDown(e.key);
   };
 
   const handleKeyUp: React.KeyboardEventHandler = (e) => {
     e.preventDefault();
-    const shapeMeta = state.shapes[e.key] 
-    dispatchPlayback(addNote({ key: e.key, e: Event.KeyUp, shapeMeta}));
+    dispatchPlayback(addNote({ key: e.key, e: Event.KeyUp }));
     return masterKeyUp(e.key);
   };
 
