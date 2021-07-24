@@ -62,7 +62,7 @@ const reducer = reducerWithInitialState(initialState)
   .case(startPlaying, s => ({ ...s, playing: true, recording: false }))
   .case(stopPlaying, s => ({ ...s, playing: false, recording: false }))
   .case(togglePlaying, s => {
-    return ({ ...s, recording: false, playRequested: !s.playRequested});
+    return ({ ...s, recording: false, playRequested: !s.playRequested });
   })
   .case(addNote, (s, { key, e }) => {
     if (key === 'Backspace') {
@@ -86,8 +86,11 @@ const reducer = reducerWithInitialState(initialState)
 export const usePlayback = ({ handleKeyDown, handleKeyUp }: UsePlaybackParams) => {
   const [s, d] = React.useReducer(reducer, initialState)
 
-  if (!s.playing && s.playRequested) {
-    d(startPlaying)
+  // if (!s.playing && s.playRequested) {
+  //   d(startPlaying)
+  // }V
+  const play = () => {
+    console.log('in play')
     s.timeline.forEach(([t, k, e], i) => {
       setTimeout(() => {
         switch (e) {
@@ -98,13 +101,22 @@ export const usePlayback = ({ handleKeyDown, handleKeyUp }: UsePlaybackParams) =
           case Event.KeyUp:
             console.log('releaseing ', k)
             handleKeyUp(k);
-        }
-        if (i === s.timeline.length - 1) {
-          setTimeout(() => d(stopPlaying), s.timeline[0][0])
+            break;
         }
       }, t)
     })
+    console.log('end play')
+
   }
+  React.useEffect(() => {
+    // debugger;
+    if (s.playRequested) {
+      const totalTime = s.timeline[s.timeline.length-1][0]
+      play()
+      console.log('interval ', totalTime)
+      setInterval(play, totalTime)
+    }
+  }, [s.playRequested, s.timeline])
   return {
     timline: s.timeline, dispatch: d, keys: s.keys
   }
