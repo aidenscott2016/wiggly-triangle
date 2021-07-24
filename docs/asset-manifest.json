@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/wiggly-triangle/static/css/main.da46483f.chunk.css",
+    "main.js": "/wiggly-triangle/static/js/main.b2a949a0.chunk.js",
+    "main.js.map": "/wiggly-triangle/static/js/main.b2a949a0.chunk.js.map",
+    "runtime-main.js": "/wiggly-triangle/static/js/runtime-main.11c4fafb.js",
+    "runtime-main.js.map": "/wiggly-triangle/static/js/runtime-main.11c4fafb.js.map",
+    "static/js/2.8d7b471d.chunk.js": "/wiggly-triangle/static/js/2.8d7b471d.chunk.js",
+    "static/js/2.8d7b471d.chunk.js.map": "/wiggly-triangle/static/js/2.8d7b471d.chunk.js.map",
+    "index.html": "/wiggly-triangle/index.html",
+    "static/css/main.da46483f.chunk.css.map": "/wiggly-triangle/static/css/main.da46483f.chunk.css.map",
+    "static/js/2.8d7b471d.chunk.js.LICENSE.txt": "/wiggly-triangle/static/js/2.8d7b471d.chunk.js.LICENSE.txt",
+    "static/media/125.f44b9916.gif": "/wiggly-triangle/static/media/125.f44b9916.gif",
+    "static/media/Triang.42ce3d09.gif": "/wiggly-triangle/static/media/Triang.42ce3d09.gif",
+    "static/media/circl.95cad828.gif": "/wiggly-triangle/static/media/circl.95cad828.gif",
+    "static/media/coffee.5f0252c9.gif": "/wiggly-triangle/static/media/coffee.5f0252c9.gif",
+    "static/media/firex.222bbfad.gif": "/wiggly-triangle/static/media/firex.222bbfad.gif",
+    "static/media/henry.45b986a2.gif": "/wiggly-triangle/static/media/henry.45b986a2.gif",
+    "static/media/logo.6ce24c58.svg": "/wiggly-triangle/static/media/logo.6ce24c58.svg",
+    "static/media/orbital.a41d65df.gif": "/wiggly-triangle/static/media/orbital.a41d65df.gif",
+    "static/media/squa.d96eb88c.gif": "/wiggly-triangle/static/media/squa.d96eb88c.gif"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.11c4fafb.js",
+    "static/js/2.8d7b471d.chunk.js",
+    "static/css/main.da46483f.chunk.css",
+    "static/js/main.b2a949a0.chunk.js"
+  ]
+}
