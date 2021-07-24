@@ -4,6 +4,7 @@ import actionCreatorFactory from "typescript-fsa";
 import { reducerWithInitialState } from "typescript-fsa-reducers";
 import { Event, Key, Timeline } from "../types";
 import { useGetTimeElapsed } from "./useGetTimeElapsed";
+import { addShapeMeta, ShapeMeta, useKeyboardInstrument } from './useKeyboardInstrument';
 
 interface UsePlaybackParams {
   handleKeyDown: (k: Key) => void
@@ -46,7 +47,7 @@ export const stopPlaying = actionCreator(STOP_PLAYING)
 export const togglePlaying = actionCreator(TOGGLE_PLAY)
 export const toggleRec = actionCreator(TOGGLE_REC)
 export const addNote = actionCreator<{
-  key: Key, e: Event
+  key: Key, e: Event, shapeMeta: ShapeMeta
 }>(ADD_NOTE)
 export const clearTimeLine = actionCreator(CLEAR_TIMELINE)
 
@@ -64,7 +65,7 @@ const reducer = reducerWithInitialState(initialState)
   .case(togglePlaying, s => {
     return ({ ...s, recording: false, playRequested: !s.playRequested});
   })
-  .case(addNote, (s, { key, e }) => {
+  .case(addNote, (s, { key, e , shapeMeta}) => {
     if (key === 'Backspace') {
       return { ...s, keys: s.keys.slice(0, -1) }
     }
@@ -73,7 +74,7 @@ const reducer = reducerWithInitialState(initialState)
       return {
         ...s, keys: e === Event.KeyUp ? s.keys : s.keys + key,
         playing: false, timeline: [...s.timeline,
-        [performance.now() - s.startRecordTime, key, e]]
+        [performance.now() - s.startRecordTime, key, e, shapeMeta]]
       }
     }
     if (key.length === 1 && e === Event.KeyDown) {
@@ -85,14 +86,17 @@ const reducer = reducerWithInitialState(initialState)
 
 export const usePlayback = ({ handleKeyDown, handleKeyUp }: UsePlaybackParams) => {
   const [s, d] = React.useReducer(reducer, initialState)
+  const { dispatch, addKeyDown, addKeyUp, pressedKeys, state } =
+    useKeyboardInstrument();
 
   if (!s.playing && s.playRequested) {
     d(startPlaying)
-    s.timeline.forEach(([t, k, e], i) => {
+    s.timeline.forEach(([t, k, e, meta], i) => {
       setTimeout(() => {
         switch (e) {
           case Event.KeyDown:
             console.log('pressing ', k)
+            dispatch(addShapeMeta({key:k , meta}))
             handleKeyDown(k);
             break;
           case Event.KeyUp:
