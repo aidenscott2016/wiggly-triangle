@@ -45,7 +45,7 @@ const setNewPos = (s: State, fn: (i: number) => number): State => {
 
 const reducer = reducerWithInitialState(INITIAL_STATE)
   .case(keyDepressed, (s, key) => ({ ...setKeyStatus(s, key, true), currentKey: key }))
-  .case(keyReleased, (s, key) => (setKeyStatus(s, key, false)))
+  .case(keyReleased, (s, key) => ({...setKeyStatus(s, key, false), currentKey: key}))
   .case(cycleLocationBack, (s, _) => setNewPos(s, decrementKeyIndex))
   .case(cycleLocationFore, (s, _) => setNewPos(s, incrementKeyIndex))
 

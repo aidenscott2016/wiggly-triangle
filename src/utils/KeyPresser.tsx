@@ -26,22 +26,30 @@ type Props = Settings;
 
 export const KeyPresser = ({ shapes, actions }: Props) => {
   const masterKeyDown = (key: Key) => {
-    addKeyDown(key);
     if (actions[key]) {
       console.log("sdpecial key");
       dispatch(actions[key](key));
       dispatchPlayback(actions[key](key));
+    } else {
+      addKeyDown(key);
     }
   };
 
   const masterKeyUp = (key: Key) => {
+    if (actions[key]) {
+      return;
+    }
     if (!isUpperCase(key)) {
       addKeyUp(key);
     }
   };
   const { dispatch, addKeyDown, addKeyUp, pressedKeys, state } =
     useKeyboardInstrument();
-  const { dispatch: dispatchPlayback, keys ,timline} = usePlayback({
+  const {
+    dispatch: dispatchPlayback,
+    keys,
+    timline,
+  } = usePlayback({
     handleKeyDown: masterKeyDown,
     handleKeyUp: masterKeyUp,
   });
@@ -51,9 +59,9 @@ export const KeyPresser = ({ shapes, actions }: Props) => {
   const handleKeyDown: React.KeyboardEventHandler = (e) => {
     e.preventDefault();
     if (state.activeKeys[e.key]) {
-      return
+      return;
     }
-    dispatchPlayback(addNote({ key: e.key, e: Event.KeyDown}));
+    dispatchPlayback(addNote({ key: e.key, e: Event.KeyDown }));
     return masterKeyDown(e.key);
   };
 
@@ -65,32 +73,48 @@ export const KeyPresser = ({ shapes, actions }: Props) => {
 
   return (
     <>
-      <p style={{ overflowWrap: 'anywhere', zIndex: 100, position: 'absolute', margin: 0, fontSize: '20pt', color: 'darkgray', fontFamily: 'Comic Sans MS, Comic Sans MS Regular'}}>{keys}</p>
-      {/* <p style={{ zIndex: 100, paddingTop: '4em'}}>{JSON.stringify(timline)}</p> */} 
+      <p
+        style={{
+          overflowWrap: "anywhere",
+          zIndex: 100,
+          position: "absolute",
+          margin: 0,
+          fontSize: "20pt",
+          color: "darkgray",
+          fontFamily: "Comic Sans MS, Comic Sans MS Regular",
+        }}
+      >
+        {keys}
+      </p>
+      {/* <p style={{ zIndex: 100, paddingTop: '4em'}}>{JSON.stringify(timline)}</p> */}
       <div
         className="full-height"
-        style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
         tabIndex={1}
         onKeyDown={handleKeyDown}
         onKeyUp={handleKeyUp}
       >
-      {shapes.map((m, i) => {
-        const visible = pressedKeys[m.key];
-        let coords = {};
-        if (state.currentKey === m.key) {
-          coords = state.shapes[state.currentKey]
-            ? state.shapes[state.currentKey].coords
-            : {};
-        }
-        const style: React.CSSProperties = visible
-          ? {  ...coords,  mixBlendMode: "hard-light" }
-          : { display: "none" };
-        return (
-          <div key={i} style={style}>
-            {m.component({ visible })}
-          </div>
-        );
-      })}
+        {shapes.map((m, i) => {
+          const visible = pressedKeys[m.key];
+          let coords = {};
+          if (state.currentKey === m.key) {
+            coords = state.shapes[state.currentKey]
+              ? state.shapes[state.currentKey].coords
+              : {};
+          }
+          const style: React.CSSProperties = visible
+            ? { ...coords, mixBlendMode: "hard-light" }
+            : { display: "none" };
+          return (
+            <div key={i} style={style}>
+              {m.component({ visible })}
+            </div>
+          );
+        })}
       </div>
     </>
   );
